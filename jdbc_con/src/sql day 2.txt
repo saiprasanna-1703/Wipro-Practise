@@ -1,0 +1,276 @@
+mysql> create table Dept(Dno int primary key,DName varchar(20),Location varchar(20));
+ERROR 2013 (HY000): Lost connection to MySQL server during query
+No connection. Trying to reconnect...
+Connection id:    17
+Current database: mydb
+ERROR 1054 (42S22): Unknown column 'Banglore' in 'field list'
+mysql> insert into Dept values(
+    -> 10,'Development','Banglore');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Dept values(
+    -> 20,'Testing','chennai');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Dept values(
+    -> 30,'Hr','Mumbai');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Dept values(
+    -> 40,'Operation','Hyderabad');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Dept values(
+    -> 50,'Sales','Delhi');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> desc Dept;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| Dno      | int         | NO   | PRI | NULL    |       |
+| DName    | varchar(20) | YES  |     | NULL    |       |
+| Location | varchar(20) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> select *
+    -> from Dept;
++-----+-------------+-----------+
+| Dno | DName       | Location  |
++-----+-------------+-----------+
+|  10 | Development | Banglore  |
+|  20 | Testing     | chennai   |
+|  30 | Hr          | Mumbai    |
+|  40 | Operation   | Hyderabad |
+|  50 | Sales       | Delhi     |
++-----+-------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Employee add(dno int references Dept(dno));
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+mysql> select * from employee e join dept d where e.dno=d.dno;
++-----+-------+----------+------+-----------+------------+------+------+-----+-------------+-----------+
+| Eid | EName | Salary   | Comm | Job       | Doj        | Mid  | dno  | Dno | DName       | Location  |
++-----+-------+----------+------+-----------+------------+------+------+-----+-------------+-----------+
+| 101 | King  | 50000.00 | NULL | President | 2020-12-01 | NULL |   10 |  10 | Development | Banglore  |
+| 102 | Smith | 45000.00 | NULL | Manager   | 2021-09-23 |  101 |   20 |  20 | Testing     | chennai   |
+| 103 | Ford  | 40000.00 | NULL | Manager   | 2022-04-15 |  101 |   20 |  20 | Testing     | chennai   |
+| 104 | Tom   | 30000.00 | 1500 | Developer | 2023-10-18 |  102 |   10 |  10 | Development | Banglore  |
+| 105 | Scott | 35000.00 | 1000 | Developer | 2023-12-25 |  102 |   10 |  10 | Development | Banglore  |
+| 106 | Jerry | 25000.00 | 3000 | Tester    | 2026-01-27 |  103 |   20 |  20 | Testing     | chennai   |
+| 107 | Ravi  | 22000.00 | 4000 | Tester    | 2026-01-26 |  103 |   20 |  20 | Testing     | chennai   |
+| 108 | Adam  | 47000.00 | NULL | Analyst   | 2024-01-01 |  101 |   30 |  30 | Hr          | Mumbai    |
+| 109 | Raju  |  5000.00 |  500 | clerk     | 2024-01-01 |  101 |   40 |  40 | Operation   | Hyderabad |
++-----+-------+----------+------+-----------+------------+------+------+-----+-------------+-----------+
+9 rows in set (0.00 sec)
+mysql> select eid,ename,salary,comm,job,doj,mid from employee e join dept d where d.dno!=e.dno;
++-----+-------+----------+------+-----------+------------+------+
+| eid | ename | salary   | comm | job       | doj        | mid  |
++-----+-------+----------+------+-----------+------------+------+
+| 101 | King  | 50000.00 | NULL | President | 2020-12-01 | NULL |
+| 101 | King  | 50000.00 | NULL | President | 2020-12-01 | NULL |
+| 101 | King  | 50000.00 | NULL | President | 2020-12-01 | NULL |
+| 101 | King  | 50000.00 | NULL | President | 2020-12-01 | NULL |
+| 102 | Smith | 45000.00 | NULL | Manager   | 2021-09-23 |  101 |
+| 102 | Smith | 45000.00 | NULL | Manager   | 2021-09-23 |  101 |
+| 102 | Smith | 45000.00 | NULL | Manager   | 2021-09-23 |  101 |
+| 102 | Smith | 45000.00 | NULL | Manager   | 2021-09-23 |  101 |
+| 103 | Ford  | 40000.00 | NULL | Manager   | 2022-04-15 |  101 |
+| 103 | Ford  | 40000.00 | NULL | Manager   | 2022-04-15 |  101 |
+| 103 | Ford  | 40000.00 | NULL | Manager   | 2022-04-15 |  101 |
+| 103 | Ford  | 40000.00 | NULL | Manager   | 2022-04-15 |  101 |
+| 104 | Tom   | 30000.00 | 1500 | Developer | 2023-10-18 |  102 |
+| 104 | Tom   | 30000.00 | 1500 | Developer | 2023-10-18 |  102 |
+| 104 | Tom   | 30000.00 | 1500 | Developer | 2023-10-18 |  102 |
+| 104 | Tom   | 30000.00 | 1500 | Developer | 2023-10-18 |  102 |
+| 105 | Scott | 35000.00 | 1000 | Developer | 2023-12-25 |  102 |
+| 105 | Scott | 35000.00 | 1000 | Developer | 2023-12-25 |  102 |
+| 105 | Scott | 35000.00 | 1000 | Developer | 2023-12-25 |  102 |
+| 105 | Scott | 35000.00 | 1000 | Developer | 2023-12-25 |  102 |
+| 106 | Jerry | 25000.00 | 3000 | Tester    | 2026-01-27 |  103 |
+| 106 | Jerry | 25000.00 | 3000 | Tester    | 2026-01-27 |  103 |
+| 106 | Jerry | 25000.00 | 3000 | Tester    | 2026-01-27 |  103 |
+| 106 | Jerry | 25000.00 | 3000 | Tester    | 2026-01-27 |  103 |
+| 107 | Ravi  | 22000.00 | 4000 | Tester    | 2026-01-26 |  103 |
+| 107 | Ravi  | 22000.00 | 4000 | Tester    | 2026-01-26 |  103 |
+| 107 | Ravi  | 22000.00 | 4000 | Tester    | 2026-01-26 |  103 |
+| 107 | Ravi  | 22000.00 | 4000 | Tester    | 2026-01-26 |  103 |
+| 108 | Adam  | 47000.00 | NULL | Analyst   | 2024-01-01 |  101 |
+| 108 | Adam  | 47000.00 | NULL | Analyst   | 2024-01-01 |  101 |
+| 108 | Adam  | 47000.00 | NULL | Analyst   | 2024-01-01 |  101 |
+| 108 | Adam  | 47000.00 | NULL | Analyst   | 2024-01-01 |  101 |
+| 109 | Raju  |  5000.00 |  500 | clerk     | 2024-01-01 |  101 |
+| 109 | Raju  |  5000.00 |  500 | clerk     | 2024-01-01 |  101 |
+| 109 | Raju  |  5000.00 |  500 | clerk     | 2024-01-01 |  101 |
+| 109 | Raju  |  5000.00 |  500 | clerk     | 2024-01-01 |  101 |
++-----+-------+----------+------+-----------+------------+------+
+36 rows in set (0.00 sec)
+mysql> select * from employee e left outer join  dept d on e.dno=d.dno;
++-----+--------+----------+------+-----------+------------+------+------+------+-------------+-----------+
+| Eid | EName  | Salary   | Comm | Job       | Doj        | Mid  | dno  | Dno  | DName       | Location  |
++-----+--------+----------+------+-----------+------------+------+------+------+-------------+-----------+
+| 101 | King   | 50000.00 | NULL | President | 2020-12-01 | NULL |   10 |   10 | Development | Banglore  |
+| 102 | Smith  | 45000.00 | NULL | Manager   | 2021-09-23 |  101 |   20 |   20 | Testing     | chennai   |
+| 103 | Ford   | 40000.00 | NULL | Manager   | 2022-04-15 |  101 |   20 |   20 | Testing     | chennai   |
+| 104 | Tom    | 30000.00 | 1500 | Developer | 2023-10-18 |  102 |   10 |   10 | Development | Banglore  |
+| 105 | Scott  | 35000.00 | 1000 | Developer | 2023-12-25 |  102 |   10 |   10 | Development | Banglore  |
+| 106 | Jerry  | 25000.00 | 3000 | Tester    | 2026-01-27 |  103 |   20 |   20 | Testing     | chennai   |
+| 107 | Ravi   | 22000.00 | 4000 | Tester    | 2026-01-26 |  103 |   20 |   20 | Testing     | chennai   |
+| 108 | Adam   | 47000.00 | NULL | Analyst   | 2024-01-01 |  101 |   30 |   30 | Hr          | Mumbai    |
+| 109 | Raju   |  5000.00 |  500 | clerk     | 2024-01-01 |  101 |   40 |   40 | Operation   | Hyderabad |
+| 110 | javeed |  2500.00 | NULL | trainer   | 2026-01-27 |  101 | NULL | NULL | NULL        | NULL      |
++-----+--------+----------+------+-----------+------------+------+------+------+-------------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> select * from employee e right outer join dept d on e.dno=d.dno;
++------+-------+----------+------+-----------+------------+------+------+-----+-------------+-----------+
+| Eid  | EName | Salary   | Comm | Job       | Doj        | Mid  | dno  | Dno | DName       | Location  |
++------+-------+----------+------+-----------+------------+------+------+-----+-------------+-----------+
+|  105 | Scott | 35000.00 | 1000 | Developer | 2023-12-25 |  102 |   10 |  10 | Development | Banglore  |
+|  104 | Tom   | 30000.00 | 1500 | Developer | 2023-10-18 |  102 |   10 |  10 | Development | Banglore  |
+|  101 | King  | 50000.00 | NULL | President | 2020-12-01 | NULL |   10 |  10 | Development | Banglore  |
+|  107 | Ravi  | 22000.00 | 4000 | Tester    | 2026-01-26 |  103 |   20 |  20 | Testing     | chennai   |
+|  106 | Jerry | 25000.00 | 3000 | Tester    | 2026-01-27 |  103 |   20 |  20 | Testing     | chennai   |
+|  103 | Ford  | 40000.00 | NULL | Manager   | 2022-04-15 |  101 |   20 |  20 | Testing     | chennai   |
+|  102 | Smith | 45000.00 | NULL | Manager   | 2021-09-23 |  101 |   20 |  20 | Testing     | chennai   |
+|  108 | Adam  | 47000.00 | NULL | Analyst   | 2024-01-01 |  101 |   30 |  30 | Hr          | Mumbai    |
+|  109 | Raju  |  5000.00 |  500 | clerk     | 2024-01-01 |  101 |   40 |  40 | Operation   | Hyderabad |
+| NULL | NULL  |     NULL | NULL | NULL      | NULL       | NULL | NULL |  50 | Sales       | Delhi     |
++------+-------+----------+------+-----------+------------+------+------+-----+-------------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> select * from employee e left outer join dept d on e.dno=d.dno
+    -> UNION
+    -> select * from employee e right outer join dept d on e.dno=d.dno;
++------+--------+----------+------+-----------+------------+------+------+------+-------------+-----------+
+| Eid  | EName  | Salary   | Comm | Job       | Doj        | Mid  | dno  | Dno  | DName       | Location  |
++------+--------+----------+------+-----------+------------+------+------+------+-------------+-----------+
+|  101 | King   | 50000.00 | NULL | President | 2020-12-01 | NULL |   10 |   10 | Development | Banglore  |
+|  102 | Smith  | 45000.00 | NULL | Manager   | 2021-09-23 |  101 |   20 |   20 | Testing     | chennai   |
+|  103 | Ford   | 40000.00 | NULL | Manager   | 2022-04-15 |  101 |   20 |   20 | Testing     | chennai   |
+|  104 | Tom    | 30000.00 | 1500 | Developer | 2023-10-18 |  102 |   10 |   10 | Development | Banglore  |
+|  105 | Scott  | 35000.00 | 1000 | Developer | 2023-12-25 |  102 |   10 |   10 | Development | Banglore  |
+|  106 | Jerry  | 25000.00 | 3000 | Tester    | 2026-01-27 |  103 |   20 |   20 | Testing     | chennai   |
+|  107 | Ravi   | 22000.00 | 4000 | Tester    | 2026-01-26 |  103 |   20 |   20 | Testing     | chennai   |
+|  108 | Adam   | 47000.00 | NULL | Analyst   | 2024-01-01 |  101 |   30 |   30 | Hr          | Mumbai    |
+|  109 | Raju   |  5000.00 |  500 | clerk     | 2024-01-01 |  101 |   40 |   40 | Operation   | Hyderabad |
+|  110 | javeed |  2500.00 | NULL | trainer   | 2026-01-27 |  101 | NULL | NULL | NULL        | NULL      |
+| NULL | NULL   |     NULL | NULL | NULL      | NULL       | NULL | NULL |   50 | Sales       | Delhi     |
++------+--------+----------+------+-----------+------------+------+------+------+-------------+-----------+
+11 rows in set (0.00 sec)
+
+mysql>mysql>  select e.eid,e.ename,e.salary,m.eid,m.ename,m.salary from employee e,employee m where e.mid=m.eid;
++-----+--------+----------+-----+-------+----------+
+| eid | ename  | salary   | eid | ename | salary   |
++-----+--------+----------+-----+-------+----------+
+| 102 | Smith  | 45000.00 | 101 | King  | 50000.00 |
+| 103 | Ford   | 40000.00 | 101 | King  | 50000.00 |
+| 104 | Tom    | 30000.00 | 102 | Smith | 45000.00 |
+| 105 | Scott  | 35000.00 | 102 | Smith | 45000.00 |
+| 106 | Jerry  | 25000.00 | 103 | Ford  | 40000.00 |
+| 107 | Ravi   | 22000.00 | 103 | Ford  | 40000.00 |
+| 108 | Adam   | 47000.00 | 101 | King  | 50000.00 |
+| 109 | Raju   |  5000.00 | 101 | King  | 50000.00 |
+| 110 | javeed |  2500.00 | 101 | King  | 50000.00 |
++-----+--------+----------+-----+-------+----------+
+9 rows in set (0.00 sec)
+
+mysql> select e.eid,e.mid,e.comm,m.eid,m.mid,m.comm from employee e,employee m where e.eid=m.mid;
++-----+------+------+-----+------+------+
+| eid | mid  | comm | eid | mid  | comm |
++-----+------+------+-----+------+------+
+| 101 | NULL | NULL | 102 |  101 | NULL |
+| 101 | NULL | NULL | 103 |  101 | NULL |
+| 102 |  101 | NULL | 104 |  102 | 1500 |
+| 102 |  101 | NULL | 105 |  102 | 1000 |
+| 103 |  101 | NULL | 106 |  103 | 3000 |
+| 103 |  101 | NULL | 107 |  103 | 4000 |
+| 101 | NULL | NULL | 108 |  101 | NULL |
+| 101 | NULL | NULL | 109 |  101 |  500 |
+| 101 | NULL | NULL | 110 |  101 | NULL |
++-----+------+------+-----+------+------+
+9 rows in set (0.00 sec)
+
+mysql>
+mysql> select * from employee where salary>(select salary from employee where ename='Tom');
++-----+-------+----------+------+-----------+------------+------+------+
+| Eid | EName | Salary   | Comm | Job       | Doj        | Mid  | dno  |
++-----+-------+----------+------+-----------+------------+------+------+
+| 101 | King  | 50000.00 | NULL | President | 2020-12-01 | NULL |   10 |
+| 102 | Smith | 45000.00 | NULL | Manager   | 2021-09-23 |  101 |   20 |
+| 103 | Ford  | 40000.00 | NULL | Manager   | 2022-04-15 |  101 |   20 |
+| 105 | Scott | 35000.00 | 1000 | Developer | 2023-12-25 |  102 |   10 |
+| 108 | Adam  | 47000.00 | NULL | Analyst   | 2024-01-01 |  101 |   30 |
++-----+-------+----------+------+-----------+------------+------+------+
+5 rows in set (0.00 sec)
+
+mysql> select * from employee where salary> any(select comm from employee where job='Developer');
++-----+--------+----------+------+-----------+------------+------+------+
+| Eid | EName  | Salary   | Comm | Job       | Doj        | Mid  | dno  |
++-----+--------+----------+------+-----------+------------+------+------+
+| 101 | King   | 50000.00 | NULL | President | 2020-12-01 | NULL |   10 |
+| 102 | Smith  | 45000.00 | NULL | Manager   | 2021-09-23 |  101 |   20 |
+| 103 | Ford   | 40000.00 | NULL | Manager   | 2022-04-15 |  101 |   20 |
+| 104 | Tom    | 30000.00 | 1500 | Developer | 2023-10-18 |  102 |   10 |
+| 105 | Scott  | 35000.00 | 1000 | Developer | 2023-12-25 |  102 |   10 |
+| 106 | Jerry  | 25000.00 | 3000 | Tester    | 2026-01-27 |  103 |   20 |
+| 107 | Ravi   | 22000.00 | 4000 | Tester    | 2026-01-26 |  103 |   20 |
+| 108 | Adam   | 47000.00 | NULL | Analyst   | 2024-01-01 |  101 |   30 |
+| 109 | Raju   |  5000.00 |  500 | clerk     | 2024-01-01 |  101 |   40 |
+| 110 | javeed |  2500.00 | NULL | trainer   | 2026-01-27 |  101 | NULL |
++-----+--------+----------+------+-----------+------------+------+------+
+10 rows in set (0.00 sec)
+
+mysql> select * from employee where salary>any(select sum(salary) from employee where job='Tester');
++-----+-------+----------+------+-----------+------------+------+------+
+| Eid | EName | Salary   | Comm | Job       | Doj        | Mid  | dno  |
++-----+-------+----------+------+-----------+------------+------+------+
+| 101 | King  | 50000.00 | NULL | President | 2020-12-01 | NULL |   10 |
++-----+-------+----------+------+-----------+------------+------+------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee where dno=(select dno from dept where location='chennai');
++-----+-------+----------+------+---------+------------+------+------+
+| Eid | EName | Salary   | Comm | Job     | Doj        | Mid  | dno  |
++-----+-------+----------+------+---------+------------+------+------+
+| 102 | Smith | 45000.00 | NULL | Manager | 2021-09-23 |  101 |   20 |
+| 103 | Ford  | 40000.00 | NULL | Manager | 2022-04-15 |  101 |   20 |
+| 106 | Jerry | 25000.00 | 3000 | Tester  | 2026-01-27 |  103 |   20 |
+| 107 | Ravi  | 22000.00 | 4000 | Tester  | 2026-01-26 |  103 |   20 |
++-----+-------+----------+------+---------+------------+------+------+
+4 rows in set (0.00 sec)
+mysql> select * from employee where salary in(select salary from employee where job='Manager');
++-----+-------+----------+------+---------+------------+------+------+
+| Eid | EName | Salary   | Comm | Job     | Doj        | Mid  | dno  |
++-----+-------+----------+------+---------+------------+------+------+
+| 102 | Smith | 45000.00 | NULL | Manager | 2021-09-23 |  101 |   20 |
+| 103 | Ford  | 40000.00 | NULL | Manager | 2022-04-15 |  101 |   20 |
++-----+-------+----------+------+---------+------------+------+------+
+2 rows in set (0.00 sec)
+
+mysql> select * from employee where salary>all(select salary from employee where job='Manager');
++-----+-------+----------+------+-----------+------------+------+------+
+| Eid | EName | Salary   | Comm | Job       | Doj        | Mid  | dno  |
++-----+-------+----------+------+-----------+------------+------+------+
+| 101 | King  | 50000.00 | NULL | President | 2020-12-01 | NULL |   10 |
+| 108 | Adam  | 47000.00 | NULL | Analyst   | 2024-01-01 |  101 |   30 |
++-----+-------+----------+------+-----------+------------+------+------+
+2 rows in set (0.00 sec)
+
+mysql> select * from employee where salary<all(select salary from employee where job='Manager');
++-----+--------+----------+------+-----------+------------+------+------+
+| Eid | EName  | Salary   | Comm | Job       | Doj        | Mid  | dno  |
++-----+--------+----------+------+-----------+------------+------+------+
+| 104 | Tom    | 30000.00 | 1500 | Developer | 2023-10-18 |  102 |   10 |
+| 105 | Scott  | 35000.00 | 1000 | Developer | 2023-12-25 |  102 |   10 |
+| 106 | Jerry  | 25000.00 | 3000 | Tester    | 2026-01-27 |  103 |   20 |
+| 107 | Ravi   | 22000.00 | 4000 | Tester    | 2026-01-26 |  103 |   20 |
+| 109 | Raju   |  5000.00 |  500 | clerk     | 2024-01-01 |  101 |   40 |
+| 110 | javeed |  2500.00 | NULL | trainer   | 2026-01-27 |  101 | NULL |
++-----+--------+----------+------+-----------+------------+------+------+
+6 rows in set (0.00 sec)
+
+
+

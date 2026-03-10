@@ -1,0 +1,494 @@
+
+mysql> CREATE TABLE CUSTOMER(cid int primary key, cname varchar(20), dob date, amount decimal);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> show tables;
++----------------+
+| Tables_in_mydb |
++----------------+
+| customer       |
++----------------+
+1 row in set (0.01 sec)
+
+mysql> desc customer;
++--------+---------------+------+-----+---------+-------+
+| Field  | Type          | Null | Key | Default | Extra |
++--------+---------------+------+-----+---------+-------+
+| cid    | int           | NO   | PRI | NULL    |       |
+| cname  | varchar(20)   | YES  |     | NULL    |       |
+| dob    | date          | YES  |     | NULL    |       |
+| amount | decimal(10,0) | YES  |     | NULL    |       |
++--------+---------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+
+mysql> alter table customer add(city varchar(20));
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+STOMER' at line 1
+mysql> insert into CUSTOMER
+    -> values(1,'sai prasanna','2003-07-17',25000,'guntur','andhra pradesh');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into CUSTOMER
+    -> values(1,'ram','2000-01-01',100000,'hyderabad','telengana');
+ERROR 1062 (23000): Duplicate entry '1' for key 'customer.PRIMARY'
+mysql> insert into CUSTOMER
+    -> values(2,'ram','2000-01-01',100000,'hyderabad','telengana');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into CUSTOMER
+    -> values(3,'sita','2001-01-01',100000,'benguluru','karnataka');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into CUSTOMER
+    -> values(4,'mine','2001-02-24',100000,'guntur','andhra pradesh');
+ERROR 1062 (23000): Duplicate entry 'andhra pradesh' for key 'customer.CUSTOMER_STATE_UNI'
+mysql> insert into CUSTOMER
+    -> values(4,'mine','2001-02-21',100000,'vijaywada','ap');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *
+    -> from CUSTOMER;
++-----+--------------+------------+--------+-----------+----------------+
+| cid | cname        | dob        | amount | city      | state          |
++-----+--------------+------------+--------+-----------+----------------+
+|   1 | sai prasanna | 2003-07-17 |  25000 | guntur    | andhra pradesh |
+|   2 | ram          | 2000-01-01 | 100000 | hyderabad | telengana      |
+|   3 | sita         | 2001-01-01 | 100000 | benguluru | karnataka      |
+|   4 | mine         | 2001-02-21 | 100000 | vijaywada | ap             |
++-----+--------------+------------+--------+-----------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> UPDATE CUSTOMER
+    -> set amount=100000 where cid=1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *
+    -> from CUSTOMER;
++-----+--------------+------------+--------+-----------+----------------+
+| cid | cname        | dob        | amount | city      | state          |
++-----+--------------+------------+--------+-----------+----------------+
+|   1 | sai prasanna | 2003-07-17 | 100000 | guntur    | andhra pradesh |
+|   2 | ram          | 2000-01-01 | 100000 | hyderabad | telengana      |
+|   3 | sita         | 2001-01-01 | 100000 | benguluru | karnataka      |
+|   4 | mine         | 2001-02-21 | 100000 | vijaywada | ap             |
++-----+--------------+------------+--------+-----------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM CUSTOMER
+    -> WHERE AMOUNT>50000;
++-----+--------------+------------+--------+-----------+----------------+
+| cid | cname        | dob        | amount | city      | state          |
++-----+--------------+------------+--------+-----------+----------------+
+|   1 | sai prasanna | 2003-07-17 | 100000 | guntur    | andhra pradesh |
+|   2 | ram          | 2000-01-01 | 100000 | hyderabad | telengana      |
+|   3 | sita         | 2001-01-01 | 100000 | benguluru | karnataka      |
+|   4 | mine         | 2001-02-21 | 100000 | vijaywada | ap             |
++-----+--------------+------------+--------+-----------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> UPDATE CUSTOMER
+    -> set amount=200000 where cid=2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *
+    -> from CUSTOMER
+    -> WHERE AMOUNT BETWEEN 100000 AND 300000;
++-----+--------------+------------+--------+-----------+----------------+
+| cid | cname        | dob        | amount | city      | state          |
++-----+--------------+------------+--------+-----------+----------------+
+|   1 | sai prasanna | 2003-07-17 | 100000 | guntur    | andhra pradesh |
+|   2 | ram          | 2000-01-01 | 200000 | hyderabad | telengana      |
+|   3 | sita         | 2001-01-01 | 100000 | benguluru | karnataka      |
+|   4 | mine         | 2001-02-21 | 100000 | vijaywada | ap             |
++-----+--------------+------------+--------+-----------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM
+    -> CUSTOMER
+    -> WHERE AMOUNT=100000 AND CITY='GUNTUR';
++-----+--------------+------------+--------+--------+----------------+
+| cid | cname        | dob        | amount | city   | state          |
++-----+--------------+------------+--------+--------+----------------+
+|   1 | sai prasanna | 2003-07-17 | 100000 | guntur | andhra pradesh |
++-----+--------------+------------+--------+--------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM
+    -> CUSTOMER
+    -> WHERE AMOUNT=100000 AND CITY='GUNTUR';
++-----+--------------+------------+--------+--------+----------------+
+| cid | cname        | dob        | amount | city   | state          |
++-----+--------------+------------+--------+--------+----------------+
+|   1 | sai prasanna | 2003-07-17 | 100000 | guntur | andhra pradesh |
++-----+--------------+------------+--------+--------+----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT *FROM
+    -> CUSTOMER
+    -> WHERE cid=1 or cid=4;
++-----+--------------+------------+--------+-----------+----------------+
+| cid | cname        | dob        | amount | city      | state          |
++-----+--------------+------------+--------+-----------+----------------+
+|   1 | sai prasanna | 2003-07-17 | 100000 | guntur    | andhra pradesh |
+|   4 | mine         | 2001-02-21 | 100000 | vijaywada | ap             |
++-----+--------------+------------+--------+-----------+----------------+
+2 rows in set (0.00 sec)
+mysql> CREATE TABLE Employee(
+    -> Eid Integer(3),
+    -> EName varchar(20),
+    -> Salary Double(7,2),
+    -> Comm Decimal,
+    -> Job varchar(20),
+    -> Doj Date,
+    -> Mid Integer(3),
+    -> CONSTRAINT Employee_Eid_PK PRIMARY KEY(Eid));
+Query OK, 0 rows affected, 3 warnings (0.04 sec)
+
+mysql> INSERT INTO  Employee values(101,'King',50000,null,'President','2020-12-01',null);
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql> INSERT INTO  Employee values(102,'Smith',45000,null,'Manager','2021-09-23',101);
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql>
+mysql> INSERT INTO  Employee values(103,'Ford',40000,null,'Manager','2022-04-15',101);
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql> INSERT INTO  Employee values(104,'Tom',30000,1500,'Developer','2023-10-18',102);
+Query OK, 1 row affected (0.00 sec)
+mysql>
+mysql> INSERT INTO  Employee values(105,'Scott',35000,1000,'Developer','2023-12-25',102);
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql>
+mysql> INSERT INTO  Employee values(106,'Jerry',25000,3000,'Tester',current_date,103);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO  Employee values(107,'Ravi',22000,4000,'Tester',current_date-1,103);
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql> desc Employee
+    -> ;
++--------+---------------+------+-----+---------+-------+
+| Field  | Type          | Null | Key | Default | Extra |
++--------+---------------+------+-----+---------+-------+
+| Eid    | int           | NO   | PRI | NULL    |       |
+| EName  | varchar(20)   | YES  |     | NULL    |       |
+| Salary | double(7,2)   | YES  |     | NULL    |       |
+| Comm   | decimal(10,0) | YES  |     | NULL    |       |
+| Job    | varchar(20)   | YES  |     | NULL    |       |
+| Doj    | date          | YES  |     | NULL    |       |
+| Mid    | int           | YES  |     | NULL    |       |
++--------+---------------+------+-----+---------+-------+
+7 rows in set (0.01 sec)
+
+mysql> SELECT *
+    -> FROM Employee;
++-----+-------+----------+------+-----------+------------+------+
+| Eid | EName | Salary   | Comm | Job       | Doj        | Mid  |
++-----+-------+----------+------+-----------+------------+------+
+| 101 | King  | 50000.00 | NULL | President | 2020-12-01 | NULL |
+| 102 | Smith | 45000.00 | NULL | Manager   | 2021-09-23 |  101 |
+| 103 | Ford  | 40000.00 | NULL | Manager   | 2022-04-15 |  101 |
+| 104 | Tom   | 30000.00 | 1500 | Developer | 2023-10-18 |  102 |
+| 105 | Scott | 35000.00 | 1000 | Developer | 2023-12-25 |  102 |
+| 106 | Jerry | 25000.00 | 3000 | Tester    | 2026-01-27 |  103 |
+| 107 | Ravi  | 22000.00 | 4000 | Tester    | 2026-01-26 |  103 |
++-----+-------+----------+------+-----------+------------+------+
+7 rows in set (0.00 sec)
+
+mysql> INSERT INTO  Employee values(108,'Adam',47000,null,'Analyst','2024-01-01',101) ,
+    -> (109,'javeed',47000,null,'manager','2024-01-01',101) ;
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO Employee(Eid,Ename,Doj)   values(110,'anil','2024-01-19');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT *
+    -> from Employee;
++-----+--------+----------+------+-----------+------------+------+
+| Eid | EName  | Salary   | Comm | Job       | Doj        | Mid  |
++-----+--------+----------+------+-----------+------------+------+
+| 101 | King   | 50000.00 | NULL | President | 2020-12-01 | NULL |
+| 102 | Smith  | 45000.00 | NULL | Manager   | 2021-09-23 |  101 |
+| 103 | Ford   | 40000.00 | NULL | Manager   | 2022-04-15 |  101 |
+| 104 | Tom    | 30000.00 | 1500 | Developer | 2023-10-18 |  102 |
+| 105 | Scott  | 35000.00 | 1000 | Developer | 2023-12-25 |  102 |
+| 106 | Jerry  | 25000.00 | 3000 | Tester    | 2026-01-27 |  103 |
+| 107 | Ravi   | 22000.00 | 4000 | Tester    | 2026-01-26 |  103 |
+| 108 | Adam   | 47000.00 | NULL | Analyst   | 2024-01-01 |  101 |
+| 109 | javeed | 47000.00 | NULL | manager   | 2024-01-01 |  101 |
+| 110 | anil   |     NULL | NULL | NULL      | 2024-01-19 | NULL |
++-----+--------+----------+------+-----------+------------+------+
+10 rows in set (0.00 sec)
+mysql> SELECT *
+    -> FROM Employee
+    -> where Comm is null;
++-----+--------+----------+------+-----------+------------+------+
+| Eid | EName  | Salary   | Comm | Job       | Doj        | Mid  |
++-----+--------+----------+------+-----------+------------+------+
+| 101 | King   | 50000.00 | NULL | President | 2020-12-01 | NULL |
+| 102 | Smith  | 45000.00 | NULL | Manager   | 2021-09-23 |  101 |
+| 103 | Ford   | 40000.00 | NULL | Manager   | 2022-04-15 |  101 |
+| 108 | Adam   | 47000.00 | NULL | Analyst   | 2024-01-01 |  101 |
+| 109 | javeed | 47000.00 | NULL | manager   | 2024-01-01 |  101 |
+| 110 | anil   |     NULL | NULL | NULL      | 2024-01-19 | NULL |
++-----+--------+----------+------+-----------+------------+------+
+6 rows in set (0.00 sec)
+mysql> SELECT EName,Salary+ifNULL(Comm,0) as Total;
+ERROR 1054 (42S22): Unknown column 'EName' in 'field list'
+mysql> SELECT EName,Salary+ifNULL(Comm,0) as Total
+    -> from Employee;
++--------+----------+
+| EName  | Total    |
++--------+----------+
+| King   | 50000.00 |
+| Smith  | 45000.00 |
+| Ford   | 40000.00 |
+| Tom    | 31500.00 |
+| Scott  | 36000.00 |
+| Jerry  | 28000.00 |
+| Ravi   | 26000.00 |
+| Adam   | 47000.00 |
+| javeed | 47000.00 |
+| anil   |     NULL |
++--------+----------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT IF(10>20,'LESSER THAN','GREATER THAN');
++----------------------------------------+
+| IF(10>20,'LESSER THAN','GREATER THAN') |
++----------------------------------------+
+| GREATER THAN                           |
++----------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select DATABASE();
++------------+
+| DATABASE() |
++------------+
+| mydb       |
++------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT USER();
++----------------+
+| USER()         |
++----------------+
+| root@localhost |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT BIN(10);
++---------+
+| BIN(10) |
++---------+
+| 1010    |
++---------+
+1 row in set (0.00 sec)
+
+mysql> select CONVERT('22',UNSIGNED);
++------------------------+
+| CONVERT('22',UNSIGNED) |
++------------------------+
+|                     22 |
++------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT SERVER();
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '()' at line 1
+mysql> SELECT VERSION();
++-----------+
+| VERSION() |
++-----------+
+| 8.0.44    |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT SLEEP(2000);
+mysql> select UPPER('sai');
++--------------+
+| UPPER('sai') |
++--------------+
+| SAI          |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select LOWER('RAM');
++--------------+
+| LOWER('RAM') |
++--------------+
+| ram          |
++--------------+
+1 row in set (0.00 sec);
+mysql> select locate('o','hello world');
++---------------------------+
+| locate('o','hello world') |
++---------------------------+
+|                         5 |
++---------------------------+
+1 row in set (0.01 sec)
+
+mysql> select field('field','hello feild sql');
++----------------------------------+
+| field('field','hello feild sql') |
++----------------------------------+
+|                                0 |
++----------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select  repeat('*',3);
++---------------+
+| repeat('*',3) |
++---------------+
+| ***           |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT CURRENT_TIMESTAMP();
++---------------------+
+| CURRENT_TIMESTAMP() |
++---------------------+
+| 2026-01-28 21:42:56 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE(CURRENT_TIMESTAMP());
++---------------------------+
+| DATE(CURRENT_TIMESTAMP()) |
++---------------------------+
+| 2026-01-28                |
++---------------------------+
+1 row in set (0.00 sec)
+mysql> SELECT TIME(CURRENT_TIMESTAMP());
++---------------------------+
+| TIME(CURRENT_TIMESTAMP()) |
++---------------------------+
+| 21:44:15                  |
++---------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT CURdate();
++------------+
+| CURdate()  |
++------------+
+| 2026-01-28 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select CURtime();
++-----------+
+| CURtime() |
++-----------+
+| 21:45:47  |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select week('2026-01-29');
++--------------------+
+| week('2026-01-29') |
++--------------------+
+|                  4 |
++--------------------+
+1 row in set (0.00 sec)
+mysql> SELECT CEIL(73.3);
++------------+
+| CEIL(73.3) |
++------------+
+|         74 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT FLOOR(9.99);
++-------------+
+| FLOOR(9.99) |
++-------------+
+|           9 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT ROUND(72.21);
++--------------+
+| ROUND(72.21) |
++--------------+
+|           72 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT ROUND(78.9);
++-------------+
+| ROUND(78.9) |
++-------------+
+|          79 |
++-------------+
+1 row in set (0.00 sec)
+mysql> SELECT MOD(6,2);
++----------+
+| MOD(6,2) |
++----------+
+|        0 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT MAX(SALARY) FROM EMPLOYEE;
++-------------+
+| MAX(SALARY) |
++-------------+
+|    50000.00 |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT MIN(SALARY) FROM EMPLOYEE;
++-------------+
+| MIN(SALARY) |
++-------------+
+|     2500.00 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT AVG(SALARY) FROM EMPLOYEE;
++--------------+
+| AVG(SALARY)  |
++--------------+
+| 30150.000000 |
++--------------+
+1 row in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
